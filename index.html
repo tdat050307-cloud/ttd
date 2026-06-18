@@ -1,0 +1,2173 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TRUNGTAMMMO — Nền tảng dịch vụ MMO hàng đầu</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --navy-base: #272f3f;
+        --navy-dark: #071222;
+        --navy-mid: rgba(18, 26, 48, 0.7);
+        --cyan: #3698ff;
+        --sky: #38bdf8;
+        --cobalt: #2563eb;
+        --light-cyan: #7dd3fc;
+        --soft-blue: #e5f0ff;
+        --ultra-light-blue: #e2f2ff;
+        --white: #ffffff;
+        --off-white: #f1f5f8;
+        --text-body: rgb(229, 240, 255);
+        --text-muted: rgba(226, 242, 255, 0.78);
+        --text-dim: rgba(226, 242, 255, 0.5);
+        --border-subtle: rgba(148, 163, 184, 0.16);
+        --border-blue: rgba(96, 165, 250, 0.26);
+        --border-cyan: rgba(54, 152, 255, 0.14);
+        --surface-glass: rgba(255, 255, 255, 0.06);
+        --shadow-blue-lg:
+          rgba(37, 99, 235, 0.74) 0px 40px 120px -54px,
+          rgba(255, 255, 255, 0.08) 0px 1px 0px 0px inset;
+        --shadow-blue-md:
+          rgba(37, 99, 235, 0.38) 0px 18px 42px -24px,
+          rgba(255, 255, 255, 0.12) 0px 1px 0px 0px inset;
+        --shadow-blue-sm: rgba(37, 99, 235, 0.26) 0px 14px 40px -24px;
+        --shadow-dark:
+          oklab(0 0 0 / 0.3) 0px 20px 25px -5px,
+          oklab(0 0 0 / 0.3) 0px 8px 10px -6px;
+        --red: #ef4444;
+        --green: #22c55e;
+        --amber: #f59e0b;
+        --radius-btn: 15.2px;
+        --radius-card: 23.2px;
+        --radius-input: 16px;
+        --radius-pill: 999px;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family:
+          ui-sans-serif,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          "Helvetica Neue",
+          sans-serif;
+        background: var(--navy-dark);
+        color: var(--text-body);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* ── Background mesh ── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse 80% 60% at 50% -10%,
+            rgba(54, 152, 255, 0.12) 0%,
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 60% 40% at 90% 80%,
+            rgba(37, 99, 235, 0.08) 0%,
+            transparent 60%
+          ),
+          linear-gradient(180deg, #071222 0%, #0d1829 40%, #111e35 100%);
+        z-index: -1;
+      }
+
+      /* ── HEADER ── */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(7, 18, 34, 0.92);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+        height: 72px;
+        display: flex;
+        align-items: center;
+      }
+
+      .header-inner {
+        max-width: 1440px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 0 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 32px;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+
+      .logo-icon {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, var(--cyan), var(--cobalt));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-blue-sm);
+        flex-shrink: 0;
+      }
+
+      .logo-icon svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .logo-text {
+        font-size: 17px;
+        font-weight: 950;
+        color: var(--white);
+        letter-spacing: -0.3px;
+      }
+
+      .logo-text span {
+        color: var(--cyan);
+      }
+
+      nav {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      nav a {
+        color: var(--text-body);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 520;
+        padding: 8px 14px;
+        border-radius: 10px;
+        transition:
+          color 200ms ease,
+          background 200ms ease;
+      }
+
+      nav a:hover {
+        color: var(--white);
+        background: rgba(255, 255, 255, 0.06);
+      }
+      nav a.active {
+        color: var(--white);
+        background: rgba(54, 152, 255, 0.12);
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .btn-login {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text-muted);
+        font-size: 11.52px;
+        font-weight: 950;
+        padding: 0 18.4px;
+        border-radius: var(--radius-btn);
+        border: 1px solid var(--border-subtle);
+        height: 44px;
+        cursor: pointer;
+        transition:
+          background 200ms,
+          box-shadow 200ms;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+      }
+
+      .btn-login:hover {
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: var(--shadow-blue-md);
+      }
+
+      .btn-register {
+        background: transparent;
+        color: var(--white);
+        font-size: 11.52px;
+        font-weight: 950;
+        padding: 0 18.4px;
+        border-radius: var(--radius-btn);
+        border: 1px solid rgba(96, 165, 250, 0.34);
+        height: 44px;
+        cursor: pointer;
+        box-shadow: rgba(37, 99, 235, 0.8) 0px 18px 46px -26px;
+        transition:
+          background 200ms,
+          box-shadow 200ms;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+      }
+
+      .btn-register:hover {
+        background: rgba(54, 152, 255, 0.1);
+        box-shadow: rgba(37, 99, 235, 0.96) 0px 22px 52px -26px;
+      }
+
+      .avatar-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: var(--radius-pill);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-subtle);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        transition: background 200ms;
+      }
+
+      .avatar-btn:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      /* ── HERO ── */
+      .hero {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 100px 40px 80px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 64px;
+        align-items: center;
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(54, 152, 255, 0.1);
+        border: 1px solid rgba(54, 152, 255, 0.22);
+        border-radius: var(--radius-pill);
+        padding: 6px 14px;
+        margin-bottom: 28px;
+        width: fit-content;
+      }
+
+      .badge-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--cyan);
+        box-shadow: 0 0 8px var(--cyan);
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.6;
+          transform: scale(0.85);
+        }
+      }
+
+      .badge-text {
+        font-size: 11px;
+        font-weight: 900;
+        color: var(--cyan);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+
+      .hero h1 {
+        font-size: clamp(40px, 5vw, 72px);
+        font-weight: 900;
+        line-height: 1.05;
+        color: var(--white);
+        margin-bottom: 24px;
+        letter-spacing: -1.5px;
+      }
+
+      .hero h1 .accent {
+        background: linear-gradient(135deg, var(--cyan), var(--light-cyan));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .hero-desc {
+        font-size: 16px;
+        font-weight: 520;
+        line-height: 1.75;
+        color: var(--text-muted);
+        margin-bottom: 40px;
+        max-width: 500px;
+      }
+
+      .hero-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .btn-cta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, var(--cyan), var(--cobalt));
+        color: var(--white);
+        font-size: 13px;
+        font-weight: 900;
+        padding: 0 24px;
+        height: 48px;
+        border-radius: var(--radius-btn);
+        border: none;
+        cursor: pointer;
+        box-shadow: rgba(37, 99, 235, 0.8) 0px 18px 46px -26px;
+        transition:
+          transform 200ms,
+          box-shadow 200ms;
+        text-decoration: none;
+      }
+
+      .btn-cta:hover {
+        transform: translateY(-1px);
+        box-shadow: rgba(37, 99, 235, 0.96) 0px 24px 52px -20px;
+      }
+
+      .btn-ghost {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: transparent;
+        color: var(--text-body);
+        font-size: 13px;
+        font-weight: 520;
+        padding: 0 20px;
+        height: 48px;
+        border-radius: var(--radius-btn);
+        border: 1px solid var(--border-subtle);
+        cursor: pointer;
+        transition:
+          background 200ms,
+          color 200ms;
+        text-decoration: none;
+      }
+
+      .btn-ghost:hover {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--white);
+      }
+
+      .hero-stats {
+        display: flex;
+        gap: 40px;
+        margin-top: 56px;
+        padding-top: 40px;
+        border-top: 1px solid rgba(148, 163, 184, 0.1);
+      }
+
+      .stat-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .stat-num {
+        font-size: 28px;
+        font-weight: 950;
+        color: var(--white);
+        letter-spacing: -0.5px;
+      }
+
+      .stat-label {
+        font-size: 11px;
+        font-weight: 900;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* ── HERO VISUAL ── */
+      .hero-visual {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .dashboard-card {
+        background: rgba(18, 26, 48, 0.85);
+        border: 1px solid var(--border-blue);
+        border-radius: var(--radius-card);
+        padding: 28px;
+        box-shadow: var(--shadow-blue-lg);
+        width: 100%;
+        max-width: 420px;
+        backdrop-filter: blur(20px);
+      }
+
+      .dash-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+
+      .dash-title {
+        font-size: 13px;
+        font-weight: 900;
+        color: var(--text-body);
+      }
+
+      .dash-badge {
+        background: rgba(34, 197, 94, 0.12);
+        border: 1px solid rgba(34, 197, 94, 0.22);
+        border-radius: var(--radius-pill);
+        padding: 4px 10px;
+        font-size: 10px;
+        font-weight: 900;
+        color: var(--green);
+      }
+
+      .service-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 24px;
+      }
+
+      .service-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 14px;
+        padding: 12px 16px;
+        transition: background 200ms;
+        cursor: pointer;
+      }
+
+      .service-row:hover {
+        background: rgba(54, 152, 255, 0.07);
+      }
+
+      .service-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+
+      .si-blue {
+        background: rgba(54, 152, 255, 0.15);
+      }
+      .si-green {
+        background: rgba(34, 197, 94, 0.12);
+      }
+      .si-amber {
+        background: rgba(245, 158, 11, 0.12);
+      }
+      .si-purple {
+        background: rgba(139, 92, 246, 0.12);
+      }
+
+      .service-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .service-name {
+        font-size: 12.5px;
+        font-weight: 900;
+        color: var(--text-body);
+        margin-bottom: 2px;
+      }
+
+      .service-sub {
+        font-size: 10.5px;
+        font-weight: 520;
+        color: var(--text-dim);
+      }
+
+      .service-price {
+        font-size: 12px;
+        font-weight: 950;
+        color: var(--cyan);
+        white-space: nowrap;
+      }
+
+      .dash-footer {
+        display: flex;
+        gap: 10px;
+      }
+
+      .mini-stat {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 14px;
+        padding: 12px 14px;
+      }
+
+      .mini-stat-val {
+        font-size: 18px;
+        font-weight: 950;
+        color: var(--white);
+        margin-bottom: 2px;
+      }
+
+      .mini-stat-key {
+        font-size: 10px;
+        font-weight: 900;
+        color: var(--text-dim);
+        text-transform: uppercase;
+      }
+
+      /* ── SECTION WRAPPER ── */
+      .section {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 80px 40px;
+      }
+
+      .section-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+
+      .eyebrow-line {
+        width: 32px;
+        height: 2px;
+        background: var(--cyan);
+        border-radius: 2px;
+      }
+
+      .eyebrow-text {
+        font-size: 11px;
+        font-weight: 900;
+        color: var(--cyan);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .section-heading {
+        font-size: clamp(24px, 3vw, 36px);
+        font-weight: 950;
+        color: var(--white);
+        line-height: 1.15;
+        letter-spacing: -0.5px;
+        margin-bottom: 12px;
+      }
+
+      .section-sub {
+        font-size: 15px;
+        font-weight: 520;
+        color: var(--text-muted);
+        max-width: 520px;
+        line-height: 1.7;
+        margin-bottom: 56px;
+      }
+
+      /* ── SERVICES GRID ── */
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+
+      .service-card {
+        background: transparent;
+        border: 1px solid var(--border-blue);
+        border-radius: var(--radius-card);
+        padding: 28px;
+        box-shadow: var(--shadow-blue-lg);
+        min-height: 240px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        transition:
+          box-shadow 300ms,
+          transform 300ms;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .service-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(54, 152, 255, 0.4),
+          transparent
+        );
+      }
+
+      .service-card:hover {
+        box-shadow:
+          rgba(37, 99, 235, 0.9) 0px 50px 140px -54px,
+          rgba(255, 255, 255, 0.1) 0px 1px 0px 0px inset;
+        transform: translateY(-2px);
+      }
+
+      .card-icon-wrap {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+      }
+
+      .ci-blue {
+        background: rgba(54, 152, 255, 0.12);
+        border: 1px solid rgba(54, 152, 255, 0.2);
+      }
+      .ci-green {
+        background: rgba(34, 197, 94, 0.1);
+        border: 1px solid rgba(34, 197, 94, 0.18);
+      }
+      .ci-amber {
+        background: rgba(245, 158, 11, 0.1);
+        border: 1px solid rgba(245, 158, 11, 0.18);
+      }
+      .ci-sky {
+        background: rgba(56, 189, 248, 0.1);
+        border: 1px solid rgba(56, 189, 248, 0.18);
+      }
+      .ci-purple {
+        background: rgba(139, 92, 246, 0.1);
+        border: 1px solid rgba(139, 92, 246, 0.18);
+      }
+      .ci-pink {
+        background: rgba(236, 72, 153, 0.1);
+        border: 1px solid rgba(236, 72, 153, 0.18);
+      }
+
+      .card-title {
+        font-size: 16px;
+        font-weight: 900;
+        color: var(--white);
+        line-height: 1.3;
+      }
+
+      .card-desc {
+        font-size: 13px;
+        font-weight: 520;
+        color: var(--text-muted);
+        line-height: 1.65;
+        flex: 1;
+      }
+
+      .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 16px;
+        border-top: 1px solid rgba(148, 163, 184, 0.1);
+      }
+
+      .card-price {
+        font-size: 13px;
+        font-weight: 950;
+        color: var(--cyan);
+      }
+
+      .card-link {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11.52px;
+        font-weight: 950;
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: color 200ms;
+      }
+
+      .card-link:hover {
+        color: var(--cyan);
+      }
+
+      /* ── MARQUEE / TRUST BAR ── */
+      .trust-bar {
+        border-top: 1px solid rgba(148, 163, 184, 0.08);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+        padding: 20px 0;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .trust-bar::before,
+      .trust-bar::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 120px;
+        z-index: 2;
+      }
+
+      .trust-bar::before {
+        left: 0;
+        background: linear-gradient(90deg, var(--navy-dark), transparent);
+      }
+      .trust-bar::after {
+        right: 0;
+        background: linear-gradient(-90deg, var(--navy-dark), transparent);
+      }
+
+      .trust-track {
+        display: flex;
+        gap: 48px;
+        animation: scroll-x 28s linear infinite;
+        width: max-content;
+      }
+
+      @keyframes scroll-x {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      .trust-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        white-space: nowrap;
+        font-size: 12px;
+        font-weight: 900;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .trust-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--cyan);
+        opacity: 0.5;
+      }
+
+      /* ── HOW IT WORKS ── */
+      .steps-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        position: relative;
+      }
+
+      .steps-grid::before {
+        content: "";
+        position: absolute;
+        top: 32px;
+        left: calc(12.5% + 32px);
+        right: calc(12.5% + 32px);
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--border-blue),
+          var(--border-blue),
+          transparent
+        );
+        pointer-events: none;
+      }
+
+      .step-card {
+        background: var(--navy-mid);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: var(--radius-card);
+        padding: 28px 24px;
+        box-shadow: var(--shadow-dark);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 16px;
+      }
+
+      .step-num {
+        width: 56px;
+        height: 56px;
+        border-radius: var(--radius-pill);
+        border: 1px solid var(--border-blue);
+        background: rgba(54, 152, 255, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 950;
+        color: var(--cyan);
+        flex-shrink: 0;
+      }
+
+      .step-title {
+        font-size: 15px;
+        font-weight: 900;
+        color: var(--white);
+      }
+
+      .step-desc {
+        font-size: 12.5px;
+        font-weight: 520;
+        color: var(--text-muted);
+        line-height: 1.65;
+      }
+
+      /* ── PRICING TABLE ── */
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        align-items: start;
+      }
+
+      .price-card {
+        background: var(--navy-mid);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: var(--radius-card);
+        padding: 32px 28px;
+        box-shadow: var(--shadow-dark);
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        transition:
+          transform 300ms,
+          box-shadow 300ms;
+      }
+
+      .price-card:hover {
+        transform: translateY(-3px);
+      }
+
+      .price-card.featured {
+        border-color: rgba(54, 152, 255, 0.4);
+        box-shadow: var(--shadow-blue-lg);
+        position: relative;
+      }
+
+      .price-card.featured::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--cyan),
+          transparent
+        );
+        border-radius: var(--radius-card) var(--radius-card) 0 0;
+      }
+
+      .price-tag {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(54, 152, 255, 0.12);
+        border: 1px solid rgba(54, 152, 255, 0.22);
+        border-radius: var(--radius-pill);
+        padding: 4px 12px;
+        font-size: 10px;
+        font-weight: 900;
+        color: var(--cyan);
+        text-transform: uppercase;
+        width: fit-content;
+      }
+
+      .price-name {
+        font-size: 20px;
+        font-weight: 950;
+        color: var(--white);
+      }
+
+      .price-amount {
+        display: flex;
+        align-items: baseline;
+        gap: 4px;
+      }
+
+      .price-num {
+        font-size: 40px;
+        font-weight: 950;
+        color: var(--white);
+        letter-spacing: -1px;
+      }
+
+      .price-currency {
+        font-size: 14px;
+        font-weight: 900;
+        color: var(--text-muted);
+      }
+
+      .price-period {
+        font-size: 12px;
+        font-weight: 520;
+        color: var(--text-dim);
+        margin-left: 2px;
+      }
+
+      .price-features {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .price-features li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        font-weight: 520;
+        color: var(--text-muted);
+      }
+
+      .feat-check {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: rgba(34, 197, 94, 0.12);
+        border: 1px solid rgba(34, 197, 94, 0.22);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 9px;
+        color: var(--green);
+      }
+
+      .feat-x {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: rgba(239, 68, 68, 0.08);
+        border: 1px solid rgba(239, 68, 68, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 9px;
+        color: var(--red);
+        opacity: 0.6;
+      }
+
+      .btn-plan {
+        width: 100%;
+        height: 48px;
+        border-radius: var(--radius-btn);
+        border: 1px solid var(--border-subtle);
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-body);
+        font-size: 12px;
+        font-weight: 950;
+        cursor: pointer;
+        transition:
+          background 200ms,
+          box-shadow 200ms;
+        margin-top: auto;
+      }
+
+      .btn-plan:hover {
+        background: rgba(255, 255, 255, 0.09);
+        box-shadow: var(--shadow-blue-sm);
+      }
+
+      .btn-plan.featured-btn {
+        background: linear-gradient(135deg, var(--cyan), var(--cobalt));
+        border-color: transparent;
+        color: var(--white);
+        box-shadow: rgba(37, 99, 235, 0.6) 0px 16px 40px -20px;
+      }
+
+      .btn-plan.featured-btn:hover {
+        box-shadow: rgba(37, 99, 235, 0.9) 0px 22px 48px -16px;
+      }
+
+      /* ── TESTIMONIALS ── */
+      .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+
+      .testi-card {
+        background: var(--navy-mid);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: var(--radius-card);
+        padding: 28px;
+        box-shadow: var(--shadow-dark);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .stars {
+        display: flex;
+        gap: 4px;
+      }
+
+      .star {
+        color: var(--amber);
+        font-size: 12px;
+      }
+
+      .testi-quote {
+        font-size: 14px;
+        font-weight: 520;
+        color: var(--text-muted);
+        line-height: 1.7;
+        flex: 1;
+      }
+
+      .testi-author {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .author-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius-pill);
+        background: linear-gradient(135deg, var(--cyan), var(--cobalt));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 950;
+        color: var(--white);
+        flex-shrink: 0;
+      }
+
+      .author-name {
+        font-size: 13px;
+        font-weight: 900;
+        color: var(--white);
+      }
+      .author-role {
+        font-size: 11px;
+        font-weight: 520;
+        color: var(--text-dim);
+      }
+
+      /* ── FAQ ── */
+      .faq-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-width: 800px;
+      }
+
+      .faq-item {
+        background: var(--navy-mid);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: border-color 200ms;
+      }
+
+      .faq-item:hover {
+        border-color: rgba(54, 152, 255, 0.22);
+      }
+
+      .faq-q {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 24px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        color: var(--white);
+        font-size: 14px;
+        font-weight: 900;
+        text-align: left;
+        gap: 16px;
+      }
+
+      .faq-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: rgba(54, 152, 255, 0.1);
+        border: 1px solid rgba(54, 152, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--cyan);
+        font-size: 14px;
+        flex-shrink: 0;
+        transition: transform 200ms;
+      }
+
+      .faq-item.open .faq-icon {
+        transform: rotate(45deg);
+      }
+
+      .faq-a {
+        display: none;
+        padding: 0 24px 20px;
+        font-size: 13.5px;
+        font-weight: 520;
+        color: var(--text-muted);
+        line-height: 1.7;
+        border-top: 1px solid rgba(148, 163, 184, 0.08);
+        padding-top: 16px;
+      }
+
+      .faq-item.open .faq-a {
+        display: block;
+      }
+
+      /* ── CTA BANNER ── */
+      .cta-section {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 40px 80px;
+      }
+
+      .cta-banner {
+        background: rgba(18, 26, 48, 0.7);
+        border: 1px solid var(--border-blue);
+        border-radius: 32px;
+        padding: 64px;
+        box-shadow: var(--shadow-blue-lg);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 40px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cta-banner::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse 70% 100% at 80% 50%,
+          rgba(54, 152, 255, 0.07) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+
+      .cta-content {
+        max-width: 560px;
+      }
+
+      .cta-content h2 {
+        font-size: clamp(22px, 3vw, 32px);
+        font-weight: 950;
+        color: var(--white);
+        letter-spacing: -0.5px;
+        margin-bottom: 12px;
+        line-height: 1.2;
+      }
+
+      .cta-content p {
+        font-size: 14.5px;
+        font-weight: 520;
+        color: var(--text-muted);
+        line-height: 1.7;
+      }
+
+      .cta-actions {
+        display: flex;
+        gap: 14px;
+        flex-shrink: 0;
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        background: rgba(7, 18, 34, 0.7);
+        border-top: 1px solid rgba(148, 163, 184, 0.08);
+        padding: 64px 40px 40px;
+      }
+
+      .footer-inner {
+        max-width: 1440px;
+        margin: 0 auto;
+      }
+
+      .footer-top {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 48px;
+        margin-bottom: 48px;
+      }
+
+      .footer-brand p {
+        font-size: 13px;
+        font-weight: 520;
+        color: var(--text-muted);
+        line-height: 1.7;
+        margin-top: 16px;
+        margin-bottom: 24px;
+        max-width: 280px;
+      }
+
+      .social-links {
+        display: flex;
+        gap: 10px;
+      }
+
+      .social-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-pill);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-subtle);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        font-size: 14px;
+        text-decoration: none;
+        transition:
+          background 200ms,
+          color 200ms;
+      }
+
+      .social-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--white);
+      }
+
+      .footer-col h4 {
+        font-size: 12px;
+        font-weight: 950;
+        color: var(--white);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin-bottom: 20px;
+      }
+
+      .footer-col ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .footer-col a {
+        font-size: 13px;
+        font-weight: 520;
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: color 200ms;
+      }
+
+      .footer-col a:hover {
+        color: var(--white);
+      }
+
+      .footer-bottom {
+        border-top: 1px solid rgba(148, 163, 184, 0.08);
+        padding-top: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .footer-copy {
+        font-size: 12px;
+        font-weight: 520;
+        color: var(--text-dim);
+      }
+
+      .footer-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 900;
+        color: var(--green);
+      }
+
+      .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--green);
+        animation: pulse 2.5s infinite;
+      }
+
+      /* ── INPUT DEMO ── */
+      .input-field {
+        width: 100%;
+        background: var(--navy-mid);
+        color: var(--text-body);
+        font-size: 14px;
+        font-weight: 520;
+        padding: 12px 16px;
+        border-radius: var(--radius-input);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        outline: none;
+        transition:
+          border-color 200ms,
+          box-shadow 200ms;
+        font-family: inherit;
+      }
+
+      .input-field::placeholder {
+        color: var(--text-dim);
+      }
+
+      .input-field:focus {
+        border-color: rgba(54, 152, 255, 0.34);
+        box-shadow: rgba(37, 99, 235, 0.26) 0px 4px 12px -4px;
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 1023px) {
+        .hero {
+          grid-template-columns: 1fr;
+          padding: 60px 24px 40px;
+        }
+        .hero-visual {
+          display: none;
+        }
+        .services-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .pricing-grid {
+          grid-template-columns: 1fr;
+        }
+        .testimonials-grid {
+          grid-template-columns: 1fr;
+        }
+        .steps-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .steps-grid::before {
+          display: none;
+        }
+        .footer-top {
+          grid-template-columns: 1fr 1fr;
+        }
+        .cta-banner {
+          flex-direction: column;
+          padding: 40px;
+        }
+        .header-inner {
+          padding: 0 24px;
+        }
+        .section {
+          padding: 60px 24px;
+        }
+      }
+
+      @media (max-width: 599px) {
+        .services-grid {
+          grid-template-columns: 1fr;
+        }
+        .steps-grid {
+          grid-template-columns: 1fr;
+        }
+        .footer-top {
+          grid-template-columns: 1fr;
+        }
+        nav {
+          display: none;
+        }
+        .hero h1 {
+          font-size: 38px;
+        }
+        .hero-stats {
+          flex-wrap: wrap;
+          gap: 24px;
+        }
+        .cta-actions {
+          flex-direction: column;
+          width: 100%;
+        }
+        .cta-actions a,
+        .cta-actions button {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ── HEADER ── -->
+    <header>
+      <div class="header-inner">
+        <a href="#" class="logo">
+          <div class="logo-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+                stroke="white"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <span class="logo-text">TRUNG<span>TAM</span>MMO</span>
+        </a>
+
+        <nav>
+          <a href="#" class="active">Trang chủ</a>
+          <a href="#">Dịch vụ</a>
+          <a href="#">Bảng giá</a>
+          <a href="#">Hướng dẫn</a>
+          <a href="#">Liên hệ</a>
+        </nav>
+
+        <div class="header-actions">
+          <a href="#" class="btn-login">Đăng nhập</a>
+          <a href="#" class="btn-register">Đăng ký</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── HERO ── -->
+    <section style="max-width: 1440px; margin: 0 auto; padding: 0 40px">
+      <div
+        class="hero"
+        style="padding-left: 0; padding-right: 0; max-width: 100%"
+      >
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="badge-dot"></span>
+            <span class="badge-text">Nền tảng MMO hàng đầu Việt Nam</span>
+          </div>
+
+          <h1>
+            Dịch vụ MMO <span class="accent">chuyên nghiệp</span><br />tất cả
+            trong một
+          </h1>
+
+          <p class="hero-desc">
+            Cung cấp đầy đủ các dịch vụ tăng tương tác mạng xã hội, traffic
+            website, và công cụ kiếm tiền online. Nhanh chóng, ổn định, bảo mật.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#" class="btn-cta">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              Bắt đầu ngay
+            </a>
+            <a href="#" class="btn-ghost">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <polygon points="10,8 16,12 10,16 10,8" fill="currentColor" />
+              </svg>
+              Xem demo
+            </a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat-item">
+              <span class="stat-num">50K+</span>
+              <span class="stat-label">Khách hàng</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">200+</span>
+              <span class="stat-label">Dịch vụ</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">99.9%</span>
+              <span class="stat-label">Uptime</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">24/7</span>
+              <span class="stat-label">Hỗ trợ</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="dashboard-card">
+            <div class="dash-header">
+              <span class="dash-title">Đơn hàng đang chạy</span>
+              <span class="dash-badge">● Live</span>
+            </div>
+
+            <div class="service-list">
+              <div class="service-row">
+                <div class="service-icon si-blue">📘</div>
+                <div class="service-info">
+                  <div class="service-name">Facebook — Tăng like</div>
+                  <div class="service-sub">1,200 / 2,000 • Đang xử lý</div>
+                </div>
+                <span class="service-price">45k₫</span>
+              </div>
+              <div class="service-row">
+                <div class="service-icon si-green">📺</div>
+                <div class="service-info">
+                  <div class="service-name">YouTube — View giờ</div>
+                  <div class="service-sub">800 / 1,000 • Đang xử lý</div>
+                </div>
+                <span class="service-price">120k₫</span>
+              </div>
+              <div class="service-row">
+                <div class="service-icon si-amber">📸</div>
+                <div class="service-info">
+                  <div class="service-name">Instagram — Followers</div>
+                  <div class="service-sub">500 / 500 • Hoàn thành</div>
+                </div>
+                <span class="service-price">35k₫</span>
+              </div>
+              <div class="service-row">
+                <div class="service-icon si-purple">🎵</div>
+                <div class="service-info">
+                  <div class="service-name">TikTok — Tăng tim</div>
+                  <div class="service-sub">2,000 / 5,000 • Đang xử lý</div>
+                </div>
+                <span class="service-price">80k₫</span>
+              </div>
+            </div>
+
+            <div class="dash-footer">
+              <div class="mini-stat">
+                <div class="mini-stat-val">4</div>
+                <div class="mini-stat-key">Đơn đang chạy</div>
+              </div>
+              <div class="mini-stat">
+                <div class="mini-stat-val">280k</div>
+                <div class="mini-stat-key">Hôm nay</div>
+              </div>
+              <div class="mini-stat">
+                <div class="mini-stat-val">2.1M</div>
+                <div class="mini-stat-key">Tháng này</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TRUST BAR ── -->
+    <div class="trust-bar">
+      <div class="trust-track">
+        <span class="trust-item"><span class="trust-dot"></span>Facebook</span>
+        <span class="trust-item"><span class="trust-dot"></span>YouTube</span>
+        <span class="trust-item"><span class="trust-dot"></span>Instagram</span>
+        <span class="trust-item"><span class="trust-dot"></span>TikTok</span>
+        <span class="trust-item"
+          ><span class="trust-dot"></span>Twitter / X</span
+        >
+        <span class="trust-item"><span class="trust-dot"></span>Spotify</span>
+        <span class="trust-item"><span class="trust-dot"></span>Telegram</span>
+        <span class="trust-item"
+          ><span class="trust-dot"></span>Google Maps</span
+        >
+        <span class="trust-item"><span class="trust-dot"></span>Shopee</span>
+        <span class="trust-item"><span class="trust-dot"></span>Lazada</span>
+        <span class="trust-item"
+          ><span class="trust-dot"></span>Website Traffic</span
+        >
+        <span class="trust-item"><span class="trust-dot"></span>Discord</span>
+        <!-- duplicate for seamless loop -->
+        <span class="trust-item"><span class="trust-dot"></span>Facebook</span>
+        <span class="trust-item"><span class="trust-dot"></span>YouTube</span>
+        <span class="trust-item"><span class="trust-dot"></span>Instagram</span>
+        <span class="trust-item"><span class="trust-dot"></span>TikTok</span>
+        <span class="trust-item"
+          ><span class="trust-dot"></span>Twitter / X</span
+        >
+        <span class="trust-item"><span class="trust-dot"></span>Spotify</span>
+        <span class="trust-item"><span class="trust-dot"></span>Telegram</span>
+        <span class="trust-item"
+          ><span class="trust-dot"></span>Google Maps</span
+        >
+        <span class="trust-item"><span class="trust-dot"></span>Shopee</span>
+        <span class="trust-item"><span class="trust-dot"></span>Lazada</span>
+        <span class="trust-item"
+          ><span class="trust-dot"></span>Website Traffic</span
+        >
+        <span class="trust-item"><span class="trust-dot"></span>Discord</span>
+      </div>
+    </div>
+
+    <!-- ── SERVICES ── -->
+    <section class="section">
+      <div class="section-eyebrow">
+        <div class="eyebrow-line"></div>
+        <span class="eyebrow-text">Dịch vụ nổi bật</span>
+      </div>
+      <h2 class="section-heading">Tất cả nền tảng, một điểm đến</h2>
+      <p class="section-sub">
+        Hơn 200 dịch vụ SMM đa nền tảng, được xử lý tự động 24/7 với tốc độ cao
+        và bảo hành uy tín.
+      </p>
+
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="card-icon-wrap ci-blue">📘</div>
+          <div class="card-title">Facebook Marketing</div>
+          <div class="card-desc">
+            Tăng like, follow, share, comment, view video và tương tác trang
+            fanpage. Nguồn chất lượng cao, tốc độ ổn định.
+          </div>
+          <div class="card-footer">
+            <span class="card-price">Từ 20k₫</span>
+            <a href="#" class="card-link">Xem thêm →</a>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div class="card-icon-wrap ci-green">📺</div>
+          <div class="card-title">YouTube Growth</div>
+          <div class="card-desc">
+            View giờ, subscribers, like, comment. Đáp ứng điều kiện kiếm tiền
+            YouTube Partner Program nhanh chóng.
+          </div>
+          <div class="card-footer">
+            <span class="card-price">Từ 50k₫</span>
+            <a href="#" class="card-link">Xem thêm →</a>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div class="card-icon-wrap ci-sky">📸</div>
+          <div class="card-title">Instagram Boost</div>
+          <div class="card-desc">
+            Followers, likes, views story/reels, saves và comments thật. Giúp
+            tài khoản đạt ngưỡng kiếm tiền nhanh hơn.
+          </div>
+          <div class="card-footer">
+            <span class="card-price">Từ 15k₫</span>
+            <a href="#" class="card-link">Xem thêm →</a>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div class="card-icon-wrap ci-amber">🎵</div>
+          <div class="card-title">TikTok Viral</div>
+          <div class="card-desc">
+            Followers, likes, views, shares và comments. Tăng tương tác để vào
+            FYP và phát triển kênh bán hàng hiệu quả.
+          </div>
+          <div class="card-footer">
+            <span class="card-price">Từ 10k₫</span>
+            <a href="#" class="card-link">Xem thêm →</a>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div class="card-icon-wrap ci-purple">🌐</div>
+          <div class="card-title">Website Traffic</div>
+          <div class="card-desc">
+            Traffic thật từ Google, referral, direct. Giảm bounce rate, tăng
+            thời gian xem và cải thiện SEO tổng thể.
+          </div>
+          <div class="card-footer">
+            <span class="card-price">Từ 30k₫</span>
+            <a href="#" class="card-link">Xem thêm →</a>
+          </div>
+        </div>
+
+        <div class="service-card">
+          <div class="card-icon-wrap ci-pink">⭐</div>
+          <div class="card-title">Google & Maps</div>
+          <div class="card-desc">
+            Đánh giá 5 sao, tăng hạng Google Maps, traffic local. Xây dựng uy
+            tín thương hiệu và cửa hàng địa phương.
+          </div>
+          <div class="card-footer">
+            <span class="card-price">Từ 25k₫</span>
+            <a href="#" class="card-link">Xem thêm →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── HOW IT WORKS ── -->
+    <section
+      class="section"
+      style="
+        background: rgba(7, 18, 34, 0.4);
+        padding-top: 80px;
+        padding-bottom: 80px;
+        max-width: 100%;
+      "
+    >
+      <div style="max-width: 1440px; margin: 0 auto; padding: 0 40px">
+        <div class="section-eyebrow">
+          <div class="eyebrow-line"></div>
+          <span class="eyebrow-text">Quy trình</span>
+        </div>
+        <h2 class="section-heading">Chỉ 4 bước đơn giản</h2>
+        <p class="section-sub" style="margin-bottom: 48px">
+          Từ đăng ký đến khi đơn hàng hoàn thành, toàn bộ tự động hóa — không
+          cần thao tác thủ công.
+        </p>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-num">01</div>
+            <div class="step-title">Tạo tài khoản</div>
+            <div class="step-desc">
+              Đăng ký miễn phí trong 30 giây. Không cần xác minh danh tính phức
+              tạp.
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">02</div>
+            <div class="step-title">Nạp số dư</div>
+            <div class="step-desc">
+              Nạp tiền qua Momo, ngân hàng, USDT hoặc thẻ cào. Xử lý tức thì
+              24/7.
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">03</div>
+            <div class="step-title">Chọn dịch vụ</div>
+            <div class="step-desc">
+              Hơn 200 dịch vụ. Chọn gói, nhập link, điền số lượng và đặt hàng.
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">04</div>
+            <div class="step-title">Theo dõi kết quả</div>
+            <div class="step-desc">
+              Hệ thống tự động xử lý. Theo dõi tiến độ đơn hàng theo thời gian
+              thực.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PRICING ── -->
+    <section class="section">
+      <div class="section-eyebrow">
+        <div class="eyebrow-line"></div>
+        <span class="eyebrow-text">Bảng giá</span>
+      </div>
+      <h2 class="section-heading">Gói nạp tiền ưu đãi</h2>
+      <p class="section-sub">
+        Nạp càng nhiều, chiết khấu càng cao. Số dư không hết hạn.
+      </p>
+
+      <div class="pricing-grid">
+        <div class="price-card">
+          <span class="price-tag">Cơ bản</span>
+          <div class="price-name">Starter</div>
+          <div class="price-amount">
+            <span class="price-num">100k</span>
+            <span class="price-currency">₫</span>
+          </div>
+          <ul class="price-features">
+            <li><span class="feat-check">✓</span>Nạp 100.000đ</li>
+            <li><span class="feat-check">✓</span>Không chiết khấu thêm</li>
+            <li><span class="feat-check">✓</span>Hỗ trợ tất cả dịch vụ</li>
+            <li><span class="feat-check">✓</span>Số dư không hết hạn</li>
+            <li><span class="feat-x">✗</span>Ưu tiên xử lý</li>
+            <li><span class="feat-x">✗</span>Account Manager riêng</li>
+          </ul>
+          <button class="btn-plan">Nạp ngay</button>
+        </div>
+
+        <div class="price-card featured">
+          <span class="price-tag">Phổ biến nhất</span>
+          <div class="price-name">Pro</div>
+          <div class="price-amount">
+            <span class="price-num">500k</span>
+            <span class="price-currency">₫</span>
+            <span class="price-period">+ 5% bonus</span>
+          </div>
+          <ul class="price-features">
+            <li><span class="feat-check">✓</span>Nạp 500.000đ</li>
+            <li><span class="feat-check">✓</span>Tặng thêm 25.000đ (5%)</li>
+            <li><span class="feat-check">✓</span>Hỗ trợ tất cả dịch vụ</li>
+            <li><span class="feat-check">✓</span>Số dư không hết hạn</li>
+            <li><span class="feat-check">✓</span>Ưu tiên xử lý đơn</li>
+            <li><span class="feat-x">✗</span>Account Manager riêng</li>
+          </ul>
+          <button class="btn-plan featured-btn">Nạp ngay</button>
+        </div>
+
+        <div class="price-card">
+          <span class="price-tag">Cao cấp</span>
+          <div class="price-name">VIP</div>
+          <div class="price-amount">
+            <span class="price-num">2M</span>
+            <span class="price-currency">₫</span>
+            <span class="price-period">+ 15% bonus</span>
+          </div>
+          <ul class="price-features">
+            <li><span class="feat-check">✓</span>Nạp 2.000.000đ</li>
+            <li><span class="feat-check">✓</span>Tặng thêm 300.000đ (15%)</li>
+            <li><span class="feat-check">✓</span>Hỗ trợ tất cả dịch vụ</li>
+            <li><span class="feat-check">✓</span>Số dư không hết hạn</li>
+            <li><span class="feat-check">✓</span>Ưu tiên xử lý đơn</li>
+            <li><span class="feat-check">✓</span>Account Manager riêng</li>
+          </ul>
+          <button class="btn-plan">Nạp ngay</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TESTIMONIALS ── -->
+    <section
+      class="section"
+      style="
+        background: rgba(7, 18, 34, 0.4);
+        padding-top: 80px;
+        padding-bottom: 80px;
+        max-width: 100%;
+      "
+    >
+      <div style="max-width: 1440px; margin: 0 auto; padding: 0 40px">
+        <div class="section-eyebrow">
+          <div class="eyebrow-line"></div>
+          <span class="eyebrow-text">Đánh giá</span>
+        </div>
+        <h2 class="section-heading">Khách hàng nói gì?</h2>
+        <p class="section-sub" style="margin-bottom: 48px">
+          Hơn 50.000 khách hàng đã tin tưởng sử dụng dịch vụ của chúng tôi.
+        </p>
+
+        <div class="testimonials-grid">
+          <div class="testi-card">
+            <div class="stars">★★★★★</div>
+            <p class="testi-quote">
+              "Dịch vụ tăng view YouTube của TrungTamMMO thực sự chất lượng.
+              Kênh mình đạt 4000 giờ xem chỉ trong 2 tuần, approve AdSense ngay.
+              Rất ổn định và đúng như cam kết."
+            </p>
+            <div class="testi-author">
+              <div class="author-avatar">TH</div>
+              <div>
+                <div class="author-name">Trần Hùng</div>
+                <div class="author-role">Youtuber • Hà Nội</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testi-card">
+            <div class="stars">★★★★★</div>
+            <p class="testi-quote">
+              "Mình dùng dịch vụ traffic cho web bán hàng. Đơn tăng rõ rệt sau 1
+              tuần chạy. Hỗ trợ phản hồi nhanh, có vấn đề gì là chat ngay được.
+              Sẽ tiếp tục sử dụng lâu dài."
+            </p>
+            <div class="testi-author">
+              <div
+                class="author-avatar"
+                style="background: linear-gradient(135deg, #22c55e, #16a34a)"
+              >
+                LN
+              </div>
+              <div>
+                <div class="author-name">Linh Nguyễn</div>
+                <div class="author-role">Chủ shop online • TP.HCM</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testi-card">
+            <div class="stars">★★★★★</div>
+            <p class="testi-quote">
+              "Tăng followers TikTok Shop cực kỳ nhanh và chất. Tài khoản mình
+              đạt điều kiện LIVE Commerce chỉ sau 3 ngày. Giá tốt hơn nhiều chỗ
+              khác mà chất lượng cao hơn hẳn."
+            </p>
+            <div class="testi-author">
+              <div
+                class="author-avatar"
+                style="background: linear-gradient(135deg, #f59e0b, #d97706)"
+              >
+                MK
+              </div>
+              <div>
+                <div class="author-name">Minh Khoa</div>
+                <div class="author-role">TikToker • Đà Nẵng</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FAQ ── -->
+    <section class="section">
+      <div
+        style="
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 64px;
+          align-items: start;
+        "
+      >
+        <div>
+          <div class="section-eyebrow">
+            <div class="eyebrow-line"></div>
+            <span class="eyebrow-text">FAQ</span>
+          </div>
+          <h2 class="section-heading">Câu hỏi thường gặp</h2>
+          <p class="section-sub" style="margin-bottom: 0">
+            Không tìm thấy câu trả lời? Liên hệ hỗ trợ qua Telegram hoặc Zalo
+            của chúng tôi.
+          </p>
+
+          <div
+            style="
+              margin-top: 32px;
+              display: flex;
+              flex-direction: column;
+              gap: 12px;
+            "
+          >
+            <a href="#" class="btn-cta" style="width: fit-content">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              Chat Telegram
+            </a>
+          </div>
+        </div>
+
+        <div class="faq-list">
+          <div class="faq-item open">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              Dịch vụ có an toàn cho tài khoản không?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-a">
+              Chúng tôi sử dụng phương pháp tăng trưởng tự nhiên, mô phỏng hành
+              vi người dùng thật để đảm bảo an toàn tối đa cho tài khoản của
+              bạn. Tuy nhiên, bạn nên bắt đầu với số lượng nhỏ để kiểm tra.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              Nạp tiền qua những hình thức nào?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-a">
+              Hỗ trợ đầy đủ các hình thức: chuyển khoản ngân hàng, Momo,
+              ZaloPay, thẻ cào điện thoại và USDT (TRC20). Tất cả đều xử lý tự
+              động 24/7.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              Nếu đơn hàng không hoàn thành thì sao?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-a">
+              Chúng tôi cam kết bảo hành đầy đủ. Nếu đơn bị thiếu hoặc không
+              hoàn thành, hệ thống sẽ tự động hoàn tiền về số dư tài khoản của
+              bạn trong vòng 24 giờ.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              Tốc độ xử lý đơn hàng như thế nào?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-a">
+              Đơn hàng thường được bắt đầu xử lý trong vòng 0–30 phút. Một số
+              dịch vụ đặc biệt có thể mất 1–12 giờ tùy theo nguồn cung và số
+              lượng đặt hàng.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              Có API cho reseller không?
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-a">
+              Có! Chúng tôi cung cấp API đầy đủ cho các đại lý muốn tích hợp vào
+              hệ thống của mình. Liên hệ Telegram để được hỗ trợ và nhận tài
+              liệu API.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CTA BANNER ── -->
+    <div class="cta-section">
+      <div class="cta-banner">
+        <div class="cta-content">
+          <h2>Sẵn sàng tăng trưởng<br />mạng xã hội ngay hôm nay?</h2>
+          <p>
+            Đăng ký miễn phí và nhận ngay 10.000đ số dư thử nghiệm. Không cần
+            thẻ tín dụng.
+          </p>
+        </div>
+        <div class="cta-actions">
+          <a href="#" class="btn-cta">Đăng ký miễn phí</a>
+          <a href="#" class="btn-ghost">Xem bảng giá</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FOOTER ── -->
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <a
+              href="#"
+              class="logo"
+              style="margin-bottom: 16px; display: inline-flex"
+            >
+              <div class="logo-icon">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+                    stroke="white"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <span class="logo-text" style="margin-left: 10px"
+                >TRUNG<span>TAM</span>MMO</span
+              >
+            </a>
+            <p>
+              Nền tảng dịch vụ MMO hàng đầu Việt Nam. Cung cấp giải pháp tăng
+              trưởng mạng xã hội toàn diện, nhanh chóng và đáng tin cậy.
+            </p>
+            <div class="social-links">
+              <a href="#" class="social-btn" title="Telegram">✈</a>
+              <a href="#" class="social-btn" title="Facebook">f</a>
+              <a href="#" class="social-btn" title="Zalo">Z</a>
+              <a href="#" class="social-btn" title="YouTube">▶</a>
+            </div>
+          </div>
+
+          <div class="footer-col">
+            <h4>Dịch vụ</h4>
+            <ul>
+              <li><a href="#">Facebook</a></li>
+              <li><a href="#">YouTube</a></li>
+              <li><a href="#">TikTok</a></li>
+              <li><a href="#">Instagram</a></li>
+              <li><a href="#">Spotify</a></li>
+              <li><a href="#">Website</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Hỗ trợ</h4>
+            <ul>
+              <li><a href="#">Hướng dẫn đặt hàng</a></li>
+              <li><a href="#">Câu hỏi thường gặp</a></li>
+              <li><a href="#">Chính sách bảo hành</a></li>
+              <li><a href="#">API cho reseller</a></li>
+              <li><a href="#">Blog kiếm tiền online</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Công ty</h4>
+            <ul>
+              <li><a href="#">Về chúng tôi</a></li>
+              <li><a href="#">Điều khoản sử dụng</a></li>
+              <li><a href="#">Chính sách bảo mật</a></li>
+              <li><a href="#">Liên hệ</a></li>
+              <li><a href="#">Tuyển dụng</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <span class="footer-copy"
+            >© 2024 TrungTamMMO. All rights reserved.</span
+          >
+          <div class="footer-status">
+            <span class="status-dot"></span>
+            Tất cả hệ thống hoạt động bình thường
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      function toggleFaq(btn) {
+        const item = btn.closest(".faq-item");
+        const isOpen = item.classList.contains("open");
+        document
+          .querySelectorAll(".faq-item")
+          .forEach((el) => el.classList.remove("open"));
+        if (!isOpen) item.classList.add("open");
+      }
+    </script>
+  </body>
+</html>
